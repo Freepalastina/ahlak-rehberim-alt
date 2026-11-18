@@ -2,133 +2,108 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#5F7138">
   <title>Ahlak Rehberim</title>
   <link rel="manifest" href="manifest.json">
-
-  <meta name="application-name" content="Ahlak Rehberim">
-  <meta name="apple-mobile-web-app-title" content="Ahlak Rehberim">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-
+  <link rel="icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="icon-180.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="hero">
-    <div>
-      <p class="eyebrow">Ahlak Rehberim</p>
-      <h1>Etik tüketim rehberi</h1>
-      <p class="sub">Marka, ana firma, kategori, alternatif ve kaynak bilgilerini inceleyin.</p>
+
+<header class="hero">
+  <div>
+    <h1 id="appTitle">Ahlak Rehberim</h1>
+    <p class="sub" id="appSub">Marka, ana firma ve alternatif arama</p>
+  </div>
+  <div class="heroActions">
+    <div class="flagLang" id="langSwitch">
+      <button type="button" data-lang="tr" class="active" aria-label="Türkçe">🇹🇷</button>
+      <button type="button" data-lang="de" aria-label="Deutsch">🇩🇪</button>
+      <button type="button" data-lang="en" aria-label="English">🇬🇧</button>
+      <button type="button" data-lang="ar" aria-label="العربية">🇸🇦</button>
     </div>
-    <div class="heroActions">
-      <button id="installBtn">📲 Uygulamayı Yükle</button>
-      <button id="openLegalNoticeBtn">ℹ️ Bilgilendirme</button>
-      <div class="flagLang" aria-label="Dil seçimi">
-        <button type="button" data-lang="tr" title="Türkçe">🇹🇷</button>
-        <button type="button" data-lang="de" title="Deutsch">🇩🇪</button>
-        <button type="button" data-lang="en" title="English">🇬🇧</button>
-        <button type="button" data-lang="ar" title="العربية">🇸🇦</button>
-      </div>
-      <button id="refreshBtn" data-i18n="refresh">Veriyi Yenile</button>
-      <button id="clearBtn" data-i18n="clear">Temizle</button>
+    <button type="button" id="installBtn">📲 Yükle</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Große, leicht bedienbare Suchleiste -->
+  <section class="searchPanel">
+    <div style="position:relative; display:flex; align-items:center; grid-column: 1 / 2;">
+      <input id="searchInput" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Marka veya firma yazın..." style="padding-right:38px;">
+      <button type="button" id="clearSearchBtn" aria-label="Temizle" style="position:absolute; right:8px; border:0; background:transparent; font-size:18px; color:#68705D; cursor:pointer; display:none;">✕</button>
     </div>
-  </header>
+    <button type="button" id="barcodeBtn">📷 Barkod</button>
+    <select id="categoryFilter" aria-label="Kategori">
+      <option value="">Tüm Kategoriler</option>
+    </select>
+    <select id="companyFilter" aria-label="Ana Firma">
+      <option value="">Tüm Ana Firmalar</option>
+    </select>
+  </section>
 
-  <main class="wrap">
-    <section class="searchPanel">
-      <button id="barcodeBtn" type="button" data-i18n-prefix="📷 " data-i18n="barcodeScan">📷 Barkod Tara</button>
-      <input id="searchInput" type="search" placeholder="Marka, ana firma, kategori veya barkod ara..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
-      <select id="countryFilter"><option value="">Ülke / tümü</option></select>
-      <select id="categoryFilter"><option value="">Kategori / tümü</option></select>
-      <select id="companyFilter"><option value="">Ana firma / tümü</option></select>
-      <select id="statusFilter">
-        <option value="">Filtre / tümü</option>
-        <option value="review">İncelenmesi önerilir</option>
-        <option value="preferred">Tercih edilebilir</option>
-        <option value="alternative">Alternatifli</option>
-        <option value="sourced">Kaynaklı</option>
-        <option value="control">Kontrol gerekli</option>
-      </select>
-    </section>
+  <!-- Kompakte Zähler -->
+  <section class="stats" id="statsBar"></section>
 
-    <section class="stats" id="stats"></section>
+  <!-- 3 klare Schnellfilter -->
+  <nav class="quick" id="quickFilters">
+    <button type="button" data-status="" class="active" id="fAll">Tümü</button>
+    <button type="button" data-status="review" id="fReview">🔴 İncelenmesi Önerilir</button>
+    <button type="button" data-status="preferred" id="fPreferred">🟢 Tercih Edilebilir</button>
+    <button type="button" data-status="alt" id="fAlt">⭐ Alternatifli</button>
+  </nav>
 
-    <section class="quick">
-      <button data-quick="review">🔴 İncelenmesi önerilir</button>
-      <button data-quick="preferred">✅ Tercih edilebilir</button>
-      <button data-quick="alternative">⭐ Alternatifli</button>
-      <button data-quick="sourced">📚 Kaynaklı</button>
-    </section>
+  <!-- Ergebnis-Überschrift -->
+  <div class="sectionTitle">
+    <h2 id="listHeading">Markalar</h2>
+    <span id="resultCount">0</span>
+  </div>
 
-    <div class="sectionTitle">
-      <h2>Markalar</h2>
-      <span id="resultCount"></span>
+  <!-- Markenkarten -->
+  <section class="grid" id="brandGrid"></section>
+
+  <!-- Mehr laden Button -->
+  <div style="text-align:center; margin-top:16px;">
+    <button type="button" id="loadMoreBtn" class="dialogBtn" style="background:var(--card); border:1px solid var(--line); color:var(--text); display:none;">Daha Fazla Göster</button>
+  </div>
+
+  <!-- Dezente rechtliche Links unten -->
+  <footer class="legalLinks">
+    <a href="hakkinda.html">Hakkında</a>
+    <a href="kaynak-politikasi.html">Kaynak Politikası</a>
+    <a href="duzeltme-politikasi.html">Düzeltme</a>
+    <a href="gizlilik-politikasi.html">Gizlilik</a>
+    <a href="hukuki-bilgilendirme.html">Hukuki Bilgilendirme</a>
+  </footer>
+</main>
+
+<!-- Detail-Dialog -->
+<dialog id="detailDialog">
+  <div class="dialogTop">
+    <button type="button" id="closeDialog" aria-label="Kapat">✕</button>
+  </div>
+  <div class="detail" id="detailBody"></div>
+</dialog>
+
+<!-- Barcode-Dialog -->
+<dialog id="barcodeDialog">
+  <div class="dialogTop">
+    <button type="button" id="closeBarcodeDialog" aria-label="Kapat">✕</button>
+  </div>
+  <div class="detail">
+    <h2 id="bcTitle">📷 Barkod Tara</h2>
+    <video id="barcodeVideo" playsinline muted></video>
+    <p id="barcodeStatus" class="meta"></p>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <input id="manualBarcodeInput" type="tel" inputmode="numeric" placeholder="Barkod numarasını yazın...">
+      <button type="button" id="manualBarcodeBtn" class="dialogBtn" style="background:var(--green); color:#fff;">Ara</button>
     </div>
+  </div>
+</dialog>
 
-    <section class="grid" id="results"></section>
-  </main>
-
-  <dialog id="detailDialog">
-    <div class="dialogTop">
-      <button id="closeDialog" aria-label="Kapat">×</button>
-    </div>
-    <div id="detailBody"></div>
-  </dialog>
-
-  <script src="app.js"></script>
-
-  <dialog id="installHelp">
-    <div class="dialogTop"><button id="closeInstallHelp" aria-label="Kapat">×</button></div>
-    <div class="detail">
-      <h2>📲 Uygulamayı Telefona Ekle</h2>
-      <h3>Android Chrome</h3>
-      <div class="listItem">1. Bu siteyi Chrome ile aç.<br>2. Üstteki <b>Uygulamayı Yükle</b> butonuna bas.<br>3. Pencere çıkmazsa sağ üstteki <b>⋮</b> menüsünden <b>Ana ekrana ekle</b> veya <b>Uygulamayı yükle</b> seç.</div>
-      <h3>iPhone / iPad Safari</h3>
-      <div class="listItem">1. Bu siteyi <b>Safari</b> ile aç.<br>2. Alttaki <b>Paylaş</b> butonuna bas.<br>3. <b>Ana Ekrana Ekle</b> seç.<br>4. <b>Ekle</b> butonuna bas.</div>
-      <h3>Not</h3>
-      <div class="listItem">iPhone’da Apple kuralı nedeniyle otomatik kurulum penceresi açılamaz. Kullanıcı Safari üzerinden Ana Ekrana Ekle yapmalıdır.</div>
-    </div>
-  </dialog>
-
-  <dialog id="legalNotice" class="legalDialog">
-    <div class="detail legalContent">
-      <h2>AHLAK REHBERİM</h2>
-      <h3>Bilgilendirme</h3>
-      <p>Bu uygulama; kamuya açık kaynaklardan derlenen bilgiler ve etik tüketim konusunda araştırma yapmayı kolaylaştırmak amacıyla hazırlanmış bir bilgi platformudur.</p>
-      <p>Uygulamada yer alan bilgiler kesin hüküm, hukuki görüş, yatırım tavsiyesi veya ticari yönlendirme niteliği taşımaz.</p>
-      <p>Şirketlerin ortaklık yapıları, lisans anlaşmaları, dağıtım hakları ve ticari ilişkileri zaman içinde değişebilir. Bu nedenle kullanıcıların karar vermeden önce resmî şirket açıklamalarını ve güncel kaynakları da incelemeleri önerilir.</p>
-      <p>Uygulama herhangi bir kişi, kurum veya markayı hedef alma amacı taşımaz. Kullanıcılar kendi araştırma ve değerlendirmeleri doğrultusunda karar verir.</p>
-      <p><b>Devam ederek bu bilgilendirmeyi okuduğunuzu ve kabul ettiğinizi onaylamış olursunuz.</b></p>
-      <div class="legalActions">
-        <button id="acceptLegalNoticeBtn">✅ Kabul Ediyorum</button>
-        <button id="exitLegalNoticeBtn">❌ Uygulamadan Çık</button>
-      </div>
-      <div class="legalLinks">
-        <a href="hukuki-bilgilendirme.html">Hukuki Bilgilendirme</a>
-        <a href="kullanim-sartlari.html">Kullanım Koşulları</a>
-        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
-        <a href="kaynak-politikasi.html">Kaynak Politikası</a>
-      </div>
-    </div>
-  </dialog>
-
-
-  <dialog id="barcodeDialog">
-    <div class="dialogTop"><button id="closeBarcode" aria-label="Kapat">×</button></div>
-    <div class="detail">
-      <h2>📷 Barkod Tara</h2>
-      <p class="meta">Kamerayı barkoda doğru tut. Tarama çalışmazsa barkod numarasını arama kutusuna yazabilirsin.</p>
-      <video id="barcodeVideo" autoplay playsinline muted></video>
-      <div class="legalActions">
-        <button id="stopBarcodeBtn">Durdur</button>
-      </div>
-      <p id="barcodeMessage" class="meta"></p>
-    </div>
-  </dialog>
+<script src="app.js"></script>
 </body>
 </html>
+
