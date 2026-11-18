@@ -1,24 +1,19 @@
 :root {
-  --bg: #F6F1E7;
+  --bg: #F5F2EB;
   --card: #FFFFFF;
-  --soft: #FAF7EE;
-  --text: #172016;
-  --muted: #68705D;
-  --green: #5F7138;
-  --green2: #3F5028;
-  --greenBg: #EAF4DC;
+  --soft: #F9F7F2;
+  --text: #1A2118;
+  --muted: #646D5B;
+  --green: #586B33;
+  --green-dark: #3B4920;
+  --green-bg: #E8F3D8;
   --red: #B42318;
-  --redBg: #FDEBE8;
-  --amber: #B45309;
-  --amberBg: #FEF3C7;
-  --line: rgba(95, 113, 56, 0.16);
-  --shadow: 0 4px 16px rgba(30, 35, 20, 0.06);
+  --red-bg: #FDECEB;
+  --line: rgba(88, 107, 51, 0.15);
+  --shadow: 0 2px 8px rgba(26, 33, 24, 0.06);
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html, body {
   margin: 0;
@@ -26,307 +21,329 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  line-height: 1.45;
-  overscroll-behavior-y: none; /* Verhindert störendes Gummiband-Ziehen im App-Modus */
+  line-height: 1.4;
+  overscroll-behavior-y: none;
 }
 
-/* 1. App-Kopfbereich mit Schutzabstand für iPhone-Notch / Statusleiste */
-.hero {
-  margin: 0 auto 14px;
-  max-width: 1100px;
-  background: linear-gradient(135deg, var(--green), var(--green2));
+/* Fixierter App-Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
   color: #fff;
-  padding: calc(16px + env(safe-area-inset-top)) 18px 18px;
-  border-radius: 0 0 22px 22px;
+  padding: calc(12px + env(safe-area-inset-top)) 14px 14px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.header-top {
+  max-width: 820px;
+  margin: 0 auto 10px;
   display: flex;
   justify-content: space-between;
-  gap: 12px;
   align-items: center;
-  box-shadow: var(--shadow);
+  gap: 8px;
 }
-.eyebrow {
-  margin: 0 0 2px;
-  opacity: 0.85;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-.hero h1 {
+
+.header-top h1 {
   margin: 0;
-  font-size: clamp(22px, 4.5vw, 34px);
-  line-height: 1.15;
-}
-.sub {
-  margin: 4px 0 0;
-  opacity: 0.9;
-  font-size: 13px;
-}
-
-.heroActions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-/* Daumen-freundliche Buttons (mind. 40-44px hoch) */
-.hero button, .quick button, .card button, .dialogBtn {
-  border: 0;
-  border-radius: 12px;
-  min-height: 40px;
-  padding: 9px 14px;
+  font-size: 20px;
   font-weight: 800;
-  font-size: 13px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-}
-.hero button:active, .quick button:active, .card button:active {
-  transform: scale(0.97);
-}
-.hero button {
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--green2);
+  letter-spacing: -0.01em;
 }
 
-/* Im installierten App-Modus den "App installieren"-Button automatisch ausblenden */
-@media all and (display-mode: standalone) {
-  #installBtn { display: none !important; }
-}
-#installBtn { background: #fff !important; color: var(--green2) !important; }
-#installBtn:disabled { opacity: 0.7; cursor: default; }
-
-/* Flaggen-Sprachauswahl */
-.flagLang {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.16);
-  padding: 4px;
-  border-radius: 14px;
-}
-.flagLang button {
-  width: 38px;
-  height: 36px;
-  min-height: 36px;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 18px;
+.header-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-.flagLang button.active {
-  background: #fff;
-  border-color: var(--bg);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Hauptbereich mit unterem Schutzabstand für iPhone-Home-Balken */
-.wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 14px calc(36px + env(safe-area-inset-bottom));
-}
-
-/* 2. Such- & Filter-Panel (16px Schrift verhindert Auto-Zoom auf iPhone!) */
-.searchPanel {
-  display: grid;
-  grid-template-columns: 2fr repeat(4, 1fr);
-  gap: 8px;
-  background: var(--card);
-  padding: 12px;
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--line);
-}
-input, select {
-  width: 100%;
-  min-height: 44px;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 12px;
-  background: var(--soft);
-  color: var(--text);
-  font: inherit;
-  font-size: 16px; /* Wichtig: 16px verhindert iOS Safari Zoom! */
-  outline: none;
-}
-input:focus, select:focus {
-  border-color: var(--green);
-  background: #fff;
-}
-
-#barcodeBtn {
-  border: 0;
-  border-radius: 12px;
-  min-height: 44px;
-  padding: 10px 14px;
-  font-weight: 800;
-  font-size: 14px;
-  cursor: pointer;
-  background: var(--green);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 6px;
 }
 
-/* 3. Kompakte Statistik-Leiste */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin: 12px 0;
-}
-.stat {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 10px 12px;
-  box-shadow: var(--shadow);
+.flag-bar {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  padding: 3px;
+  border-radius: 10px;
 }
-.stat.review { background: linear-gradient(135deg, var(--redBg), #fff); border-color: rgba(180, 35, 24, 0.2); }
-.stat.preferred { background: linear-gradient(135deg, var(--greenBg), #fff); border-color: rgba(95, 113, 56, 0.25); }
-.stat span { font-weight: 700; font-size: 11px; color: var(--muted); }
-.stat b { font-size: 20px; display: block; margin-top: 2px; line-height: 1.15; }
 
-/* 4. Schnellfilter-Leiste (horizontal wischbar am Handy) */
-.quick {
+.flag-bar button {
+  width: 32px;
+  height: 30px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.flag-bar button.active {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transform: scale(1.05);
+}
+
+#installBtn {
+  border: 0;
+  border-radius: 9px;
+  height: 34px;
+  padding: 0 10px;
+  background: #fff;
+  color: var(--green-dark);
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+@media all and (display-mode: standalone) {
+  #installBtn { display: none !important; }
+}
+
+/* Suchleiste direkt im Header */
+.search-bar {
+  max-width: 820px;
+  margin: 0 auto;
   display: flex;
   gap: 8px;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrap input {
+  width: 100%;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 36px 0 14px;
+  background: #fff;
+  color: var(--text);
+  font-size: 16px; /* Verhindert iOS Auto-Zoom */
+  outline: none;
+}
+
+#clearSearchBtn {
+  position: absolute;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+}
+
+#barcodeBtn {
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+/* Hauptbereich */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 12px 12px calc(36px + env(safe-area-inset-bottom));
+}
+
+/* Wischbare Status-Tabs */
+.filter-pills {
+  display: flex;
+  gap: 6px;
   overflow-x: auto;
-  padding-bottom: 4px;
-  margin: 0 0 14px;
+  padding-bottom: 8px;
   scrollbar-width: none;
 }
-.quick::-webkit-scrollbar { display: none; }
-.quick button {
-  background: var(--card);
+.filter-pills::-webkit-scrollbar { display: none; }
+
+.filter-pills button {
   border: 1px solid var(--line);
+  background: var(--card);
   color: var(--text);
-  white-space: nowrap;
   border-radius: 999px;
-  min-height: 38px;
-  padding: 7px 14px;
+  height: 36px;
+  padding: 0 14px;
   font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
 }
-.quick button:hover, .quick button.active {
+
+.filter-pills button.active {
   background: var(--green);
   color: #fff;
   border-color: var(--green);
 }
 
-.sectionTitle {
+/* Kompakte Dropdowns nebeneinander */
+.dropdown-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dropdown-row select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0 10px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+
+/* Ergebnis-Zeile */
+.status-line {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin: 8px 0 10px;
+  align-items: center;
+  margin: 4px 2px 10px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
 }
-.sectionTitle h2 { margin: 0; font-size: 20px; }
-.sectionTitle span { font-weight: 700; font-size: 13px; color: var(--muted); }
 
-/* 5. Übersichtliche Markenkarten */
-.grid {
+/* Markenkarten-Liste */
+.brand-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
+
+@media (min-width: 640px) {
+  .brand-list { grid-template-columns: 1fr 1fr; }
+}
+
 .card {
+  position: relative;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 14px;
+  border-radius: 14px;
+  padding: 12px 14px 12px 18px;
   box-shadow: var(--shadow);
+  cursor: pointer;
   display: flex;
   flex-direction: column;
+  gap: 5px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  border-radius: 14px 0 0 14px;
+  background: var(--red);
+}
+.card.preferred::before { background: var(--green); }
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 8px;
 }
-.card h3 { margin: 0; font-size: 18px; line-height: 1.25; }
-.meta { color: var(--muted); font-weight: 600; font-size: 13px; line-height: 1.45; }
+
+.card h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
 
 .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border-radius: 999px;
-  padding: 4px 10px;
+  font-size: 11px;
   font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge.review { background: var(--red-bg); color: var(--red); }
+.badge.preferred { background: var(--green-bg); color: var(--green-dark); }
+
+.card-meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.card-alt {
   font-size: 12px;
-  width: fit-content;
-}
-.badge.review { background: var(--redBg); color: var(--red); }
-.badge.preferred { background: var(--greenBg); color: var(--green2); }
-.badge.control { background: var(--amberBg); color: var(--amber); }
-
-.card button {
-  margin-top: auto;
-  background: var(--soft);
-  color: var(--green2);
-  border: 1px solid var(--line);
-  min-height: 40px;
-}
-.card button:hover {
-  background: var(--green);
-  color: #fff;
+  font-weight: 700;
+  color: var(--green-dark);
+  background: var(--green-bg);
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-top: 2px;
 }
 
-.empty {
+.empty-box {
   grid-column: 1 / -1;
   background: var(--card);
-  border-radius: 16px;
-  padding: 22px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 24px;
   text-align: center;
   color: var(--muted);
-  border: 1px dashed var(--line);
+  font-size: 14px;
 }
 
-/* Visuelle Fallbacks */
-.brandVisual {
-  height: 110px;
-  border-radius: 12px;
-  background: var(--soft);
+.load-more-wrap {
+  text-align: center;
+  margin-top: 16px;
+}
+
+#loadMoreBtn {
+  height: 42px;
+  padding: 0 20px;
   border: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
 }
-.brandVisual img { width: 100%; height: 100%; object-fit: cover; }
-.visualFallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f7f1e5, #dfe8cf);
-  color: var(--green);
-}
-.visualFallback b { font-size: 32px; letter-spacing: 1px; }
-.visualFallback span { font-weight: 700; font-size: 12px; opacity: 0.8; }
 
-/* 6. Detail- & Barcode-Fenster */
+/* Dialoge (Detail & Barcode) */
 dialog {
-  width: min(760px, calc(100vw - 20px));
+  width: min(560px, calc(100vw - 20px));
   border: 0;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 0;
   background: var(--card);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-  max-height: 88vh;
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  max-height: 86vh;
   overflow: auto;
 }
-dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
+dialog::backdrop { background: rgba(0, 0, 0, 0.5); }
 
-.dialogTop {
+.dialog-top {
   position: sticky;
   top: 0;
   background: var(--card);
@@ -334,89 +351,108 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
   justify-content: flex-end;
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
-  z-index: 2;
 }
-#closeDialog {
+
+.close-btn {
+  width: 34px;
+  height: 34px;
   border: 0;
   border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
   background: var(--soft);
   color: var(--text);
+  font-size: 18px;
   cursor: pointer;
 }
-.detail { padding: 16px 18px calc(20px + env(safe-area-inset-bottom)); }
-.detail h2 { font-size: 24px; margin: 0 0 6px; }
-.detail h3 { margin: 16px 0 8px; font-size: 16px; }
 
-.detailGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin: 12px 0;
+.dialog-body {
+  padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
 }
-.infoBox {
+
+.dialog-body h2 { margin: 8px 0 12px; font-size: 22px; }
+.dialog-body h4 { margin: 14px 0 6px; font-size: 13px; color: var(--muted); text-transform: uppercase; }
+
+.info-box {
   background: var(--soft);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-.infoBox small { display: block; color: var(--muted); font-weight: 700; font-size: 11px; }
-.infoBox b { display: block; margin-top: 3px; font-size: 14px; }
-
-.detailVisual {
-  margin: 12px 0 16px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: var(--soft);
-  border: 1px solid var(--line);
-  max-height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.detailVisual img { width: 100%; max-height: 220px; object-fit: cover; }
-
-.list { display: grid; gap: 8px; }
-.listItem {
-  border: 1px solid var(--line);
-  background: var(--soft);
   border-radius: 12px;
   padding: 10px 12px;
   font-size: 14px;
+  margin-bottom: 8px;
 }
-.listItem a { color: var(--green2); font-weight: 800; word-break: break-all; }
 
-.pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill {
-  border: 1px solid var(--line);
-  background: var(--greenBg);
-  color: var(--green2);
-  border-radius: 999px;
-  padding: 6px 12px;
+.alt-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.alt-pills span {
+  background: var(--green-bg);
+  color: var(--green-dark);
   font-weight: 700;
   font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.source-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--green-dark);
+  font-weight: 700;
+  font-size: 13px;
+  word-break: break-all;
 }
 
 #barcodeVideo {
   width: 100%;
-  max-height: 340px;
+  max-height: 300px;
   background: #111;
-  border-radius: 14px;
-  margin: 10px 0;
+  border-radius: 12px;
+  margin: 8px 0;
 }
 
-/* Rechtliche Hinweise & Hilfeseiten */
-#installHelp { width: min(640px, calc(100vw - 20px)); }
-.legalDialog {
-  width: min(720px, calc(100vw - 20px));
-  border: 0;
-  border-radius: 20px;
-  background: var(--card);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
-  max-height: 90vh;
-  overflow: auto;
+.manual-bc {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
 }
-.legalDialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+.manual-bc input {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 12px;
+  font-size: 16px;
+}
+.manual-bc button {
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* Footer Links */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.footer-links a {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+html[dir="rtl"] body { text-align: right; }
 
